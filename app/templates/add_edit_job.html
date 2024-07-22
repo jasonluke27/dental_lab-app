@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>{{ title }}</h1>
+  <form action="" method="post">
+    {{ form.hidden_tag() }}
+    <p>
+      {{ form.job_type.label }}<br>
+      {{ form.job_type() }}
+    </p>
+      {{ form.practice_name.label }}<br>
+      {{ form.practice_name() }}
+    </p>
+      {{ form.doctor_name.label }}<br>
+      {{ form.doctor_name() }}
+    </p>
+      {{ form.patient_name.label }}<br>
+      {{ form.patient_name(size=64) }}
+    </p>
+      {{ form.lab_slip_number.label }}<br>
+      {{ form.lab_slip_number(size=64) }}
+    </p>
+      {{ form.job_status.label }}<br>
+      {{ form.job_status() }}
+    </p>
+      {{ form.due_date.label }}<br>
+      {{ form.due_date() }}
+    </p>
+      {{ form.shade.label }}<br>
+      {{ form.shade(size=64) }}
+    </p>
+      {{ form.invoice_number.label }}<br>
+      {{ form.invoice_number(size=64) }}
+    </p>
+      {{ form.delivery_info.label }}<br>
+      {{ form.delivery_info(size=64) }}
+    </p>
+      {{ form.comments.label }}<br>
+      {{ form.comments(rows=4, cols=50) }}  <!-- Add comments field -->
+    </p>
+    <p>{{ form.submit() }}</p>
+  </form>
+{% endblock %}
