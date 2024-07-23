@@ -45,6 +45,8 @@
                 <th>Shade</th>
                 <th>Invoice Number</th>
                 <th>Recieved By/Waybill</th>
+                <th>Date Added</th>
+                <th>Last Edited</th>
                 <th>Comments</th>
                 <th>Actions</th>
             </tr>
@@ -62,6 +64,8 @@
                 <td>{{ job.shade }}</td>
                 <td>{{ job.invoice_number }}</td>
                 <td>{{ job.delivery_info }}</td>
+                <td>{{ job.created_date.strftime('%d/%m/%Y %H:%M') }}</td>
+                <td>{{ job.updated_date.strftime('%d/%m/%Y %H:%M') }}</td>
                 <td>{{ job.comments }}</td>
                 <td class="actions">
                     <a href="{{ url_for('job', id=job.id) }}" class="btn btn-primary btn-sm">View</a>

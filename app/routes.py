@@ -81,9 +81,6 @@ def register():
 @app.route('/add_job', methods=['GET', 'POST'])
 @login_required
 def add_job():
-    if not current_user.is_admin:
-        flash('Only administrators can add or edit jobs.')
-        return redirect(url_for('index'))
     form = JobForm()
     if form.validate_on_submit():
         job = Job(
@@ -96,56 +93,38 @@ def add_job():
             due_date=form.due_date.data,
             shade=form.shade.data,
             invoice_number=form.invoice_number.data,
-            delivery_info=form.delivery_info.data
+            delivery_info=form.delivery_info.data,
+            comments=form.comments.data,
+            created_date=datetime.utcnow(),
+            updated_date=datetime.utcnow()
         )
-        logger.debug('Job to be added: %s', job)
-        try:
-            db.session.add(job)
-            db.session.commit()
-            flash('Job added successfully!')
-        except Exception as e:
-            db.session.rollback()
-            logger.error('Error adding job: %s', e)
-            flash('Error adding job. Please try again.')
+        db.session.add(job)
+        db.session.commit()
+        flash('Job added successfully.')
         return redirect(url_for('index'))
     return render_template('add_edit_job.html', title='Add Job', form=form)
 
 @app.route('/edit_job/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_job(id):
-    if not current_user.is_admin:
-        flash('Admin access required to edit jobs.')
-        return redirect(url_for('index'))
-        
     job = Job.query.get_or_404(id)
     form = EditJobForm(obj=job)
     if form.validate_on_submit():
-        try:
-            print("Raw form data:", request.form)
-            job.job_type = form.job_type.data
-            job.practice_name = form.practice_name.data
-            job.doctor_name = form.doctor_name.data
-            job.patient_name = form.patient_name.data
-            job.lab_slip_number = form.lab_slip_number.data
-            job.job_status = form.job_status.data
-            job.due_date = form.due_date.data
-            job.shade = form.shade.data
-            job.invoice_number = form.invoice_number.data
-            job.delivery_info = form.delivery_info.data
-            job.comments = form.comments.data
-
-            db.session.commit()
-            return redirect(url_for('index'))
-        except Exception as e:
-            print("Error updating job:", e)
-            flash('Error updating job.')
-            db.session.rollback()
-    else:
-        if request.method == 'POST':
-            print("Form errors:", form.errors)
-            print("Raw form data:", request.form)
-            flash('Please correct the errors in the form.')
-
+        job.job_type = form.job_type.data
+        job.practice_name = form.practice_name.data
+        job.doctor_name = form.doctor_name.data
+        job.patient_name = form.patient_name.data
+        job.lab_slip_number = form.lab_slip_number.data
+        job.job_status = form.job_status.data
+        job.due_date = form.due_date.data
+        job.shade = form.shade.data
+        job.invoice_number = form.invoice_number.data
+        job.delivery_info = form.delivery_info.data
+        job.comments = form.comments.data
+        job.updated_date = datetime.utcnow()
+        db.session.commit()
+        flash('Job updated successfully.')
+        return redirect(url_for('index'))
     return render_template('edit_job.html', title='Edit Job', form=form, job=job)
 
 @app.route('/job/<int:id>')

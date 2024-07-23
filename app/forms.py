@@ -1,9 +1,10 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, DateField, TextAreaField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, DateField, TextAreaField, HiddenField
 from wtforms.validators import DataRequired, ValidationError, EqualTo
 from app.models import User, Job, Practice, Doctor
 from wtforms import StringField, SelectField, SubmitField, DateField, TextAreaField
 from wtforms.validators import DataRequired
+from datetime import datetime
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
@@ -48,6 +49,8 @@ class JobForm(FlaskForm):
     invoice_number = StringField('Invoice Number')
     delivery_info = StringField('Delivery Information')
     comments = TextAreaField('Comments')  # Add comments field
+    created_date = HiddenField('Created Date', default=datetime.utcnow)
+    updated_date = HiddenField('Updated Date', default=datetime.utcnow)
     submit = SubmitField('Submit')
 
     def __init__(self, *args, **kwargs):
@@ -94,4 +97,5 @@ class EditJobForm(FlaskForm):
     invoice_number = StringField('Invoice Number')
     delivery_info = StringField('Delivery Information')
     comments = TextAreaField('Comments')
+    updated_date = HiddenField('Updated Date', default=datetime.utcnow)
     submit = SubmitField('Submit')

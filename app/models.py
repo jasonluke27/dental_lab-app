@@ -53,6 +53,8 @@ class Job(db.Model):
     invoice_number = db.Column(db.String(64))
     delivery_info = db.Column(db.String(64))
     comments = db.Column(db.Text)
+    created_date = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_date = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     def __repr__(self):
         return '<Job {}>'.format(self.patient_name)
